@@ -21,20 +21,21 @@ total_revenue = 0
 # Open and read the csv
 with open(file_to_load) as financial_data:
     reader = csv.DictReader(financial_data)
-
+    
     # Process each row of data
     for row in reader:
 
         # Track the total
         total_months += 1
         total_revenue += int(row["Profit/Losses"])
-
-        # Track the net change
         revenue_change = int(row["Profit/Losses"]) - prev_revenue
         prev_revenue = int(row["Profit/Losses"])
-        revenue_change_list = revenue_change_list + [revenue_change]
         month_of_change = month_of_change + [row["Date"]]
-      
+        
+        # Track the net change
+        if total_months !=1:
+            revenue_change_list = revenue_change_list + [revenue_change]
+                  
         # Calculate the greatest increase in profits (month and amount)
         if (revenue_change > greatest_increase[1]):
             greatest_increase[0] = row["Date"]
@@ -65,3 +66,4 @@ print(output)
 # Write the results to a text file
 with open(file_to_output, "w") as txt_file:
     txt_file.write(output)
+
